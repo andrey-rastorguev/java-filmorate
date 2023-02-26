@@ -70,7 +70,7 @@ class FilmTest {
         film.setDuration(0);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("должно быть больше 0")) && (x.getPropertyPath().toString().equals("duration")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.Positive.message}")) && (x.getPropertyPath().toString().equals("duration")))
                 .count();
         assertEquals(1, countErrors, "Size duration is not more 0");
     }
@@ -81,7 +81,7 @@ class FilmTest {
         film.setDuration(-6);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("должно быть больше 0")) && (x.getPropertyPath().toString().equals("duration")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.Positive.message}")) && (x.getPropertyPath().toString().equals("duration")))
                 .count();
         assertEquals(1, countErrors, "Size duration is negative");
     }

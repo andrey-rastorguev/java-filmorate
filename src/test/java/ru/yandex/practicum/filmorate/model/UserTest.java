@@ -36,7 +36,7 @@ class UserTest {
         user.setEmail("123");
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("должно иметь формат адреса электронной почты")) && (x.getPropertyPath().toString().equals("email")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.Email.message}")) && (x.getPropertyPath().toString().equals("email")))
                 .count();
         assertEquals(1, countErrors, "Email has wrong format");
     }
@@ -58,7 +58,7 @@ class UserTest {
         user.setLogin("vasya 123");
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("должно соответствовать \"\\S+\"")) && (x.getPropertyPath().toString().equals("login")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.Pattern.message}")) && (x.getPropertyPath().toString().equals("login")))
                 .count();
         assertEquals(1, countErrors, "Login has wrong format");
     }
@@ -80,7 +80,7 @@ class UserTest {
         user.setBirthday(LocalDate.of(2100, 11, 3));
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("должно содержать прошедшую дату")) && (x.getPropertyPath().toString().equals("birthday")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.Past.message}")) && (x.getPropertyPath().toString().equals("birthday")))
                 .count();
         assertEquals(1, countErrors, "Birthday is in future");
     }
