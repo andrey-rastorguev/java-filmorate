@@ -26,7 +26,7 @@ class FilmTest {
         film.setName(null);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("не должно быть пустым")) && (x.getPropertyPath().toString().equals("name")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.NotBlank.message}")) && (x.getPropertyPath().toString().equals("name")))
                 .count();
         assertEquals(1, countErrors, "Name is empty");
     }
@@ -37,7 +37,7 @@ class FilmTest {
         film.setName("  ");
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         long countErrors = violations.stream()
-                .filter(x -> (x.getMessage().equals("не должно быть пустым")) && (x.getPropertyPath().toString().equals("name")))
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.NotBlank.message}")) && (x.getPropertyPath().toString().equals("name")))
                 .count();
         assertEquals(1, countErrors, "Name is empty");
     }
