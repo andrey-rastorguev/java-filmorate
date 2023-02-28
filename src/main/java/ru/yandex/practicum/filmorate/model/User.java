@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.filmorate.other.ValidationException;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -14,9 +13,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @Slf4j
 public class User {
-    private static int genNextId = 1;
     @Positive
-    private int id = genNextId;
+    private int id = 1;
     @Email
     private String email;
     @Pattern(regexp = "\\S+")
@@ -44,10 +42,6 @@ public class User {
         } else {
             return name;
         }
-    }
-
-    public static void incrementNextId() {
-        genNextId++;
     }
 
 }

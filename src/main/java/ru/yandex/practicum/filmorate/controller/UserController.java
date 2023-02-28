@@ -1,13 +1,13 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.other.UpdateException;
-import ru.yandex.practicum.filmorate.other.ValidationException;
+import ru.yandex.practicum.filmorate.repository.UserRepository;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -15,29 +15,24 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private List<User> users = new ArrayList<>();
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping
-    public User create(@RequestBody @Valid User user) throws ValidationException {
-        users.add(user);
-        User.incrementNextId();
+    public User create(@RequestBody @Valid User user) {
+        userRepository.add(user);
         return user;
     }
 
     @PutMapping
-    public User update(@RequestBody @Valid User user) throws ValidationException, UpdateException {
-        if (users.contains(user)) {
-            users.remove(user);
-            users.add(user);
-        } else {
-            throw new UpdateException("User: Не найден объект для обновления");
-        }
+    public User update(@RequestBody @Valid User user) throws UpdateException {
+        userRepository.update(user);
         return user;
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return users;
+        return userRepository.getAll();
     }
 
 }

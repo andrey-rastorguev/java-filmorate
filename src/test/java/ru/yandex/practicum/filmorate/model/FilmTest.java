@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.other.ValidationException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -98,21 +97,37 @@ class FilmTest {
     }
 
     @Test
+    void validateDescriptionForTooBigSize() {
+        Film film = new Film();
+        film.setDescription("a".repeat(300));
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        long countErrors = violations.stream()
+                .filter(x -> (x.getMessageTemplate().equals("{javax.validation.constraints.Size.message}")) && (x.getPropertyPath().toString().equals("description")))
+                .count();
+        assertEquals(1, countErrors, "Size description is more 200");
+    }
+
+    @Test
     void validateReleaseDateForCorrectValue() {
         Film film = new Film();
-        film.setReleaseDate(LocalDate.of(2010, 11, 11));
-        assertDoesNotThrow(() -> film.valid(), "Wrong validate releaseDate field");
+        film.setReleaseDate(LocalDate.of(1995, 1, 14));
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        long countErrors = violations.stream()
+                .filter(x -> (x.getPropertyPath().toString().equals("releaseDate")))
+                .count();
+        assertEquals(0, countErrors, "Wrong validate releaseDate field");
 
     }
 
     @Test
-    void validateReleaseDateForWringValue() {
+    void validateReleaseDateForTooEarlierDate() {
         Film film = new Film();
         film.setReleaseDate(LocalDate.of(1810, 11, 1));
-        ValidationException thrown = assertThrows(ValidationException.class, () -> {
-            film.valid();
-        });
-        assertEquals("Film: Слишком ранняя дата релиза", thrown.getMessage(), "Film: Слишком ранняя дата релиза");
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        long countErrors = violations.stream()
+                .filter(x -> (x.getMessageTemplate().equals("Release date too early")) && (x.getPropertyPath().toString().equals("releaseDate")))
+                .count();
+        assertEquals(1, countErrors, "Release date too early");
     }
 
 
