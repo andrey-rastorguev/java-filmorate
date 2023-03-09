@@ -41,7 +41,7 @@ public class User {
     }
 
     public String getName() {
-        if (name == null) {
+        if (name == null || name.equals("")) {
             return login;
         } else {
             return name;
