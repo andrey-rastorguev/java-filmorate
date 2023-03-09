@@ -6,7 +6,9 @@ import ru.yandex.practicum.filmorate.validator.FilmDateReleaseDateTrue;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,6 +28,7 @@ public class Film {
     @Positive
     private int duration;
 
+    private final Set<User> likes = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
