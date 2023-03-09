@@ -18,6 +18,7 @@ public class InMemoryUserStorage implements UserStorage {
         users.add(user);
         return user;
     }
+
     @Override
     public User delete(User user) {
         users.remove(user);
@@ -39,6 +40,7 @@ public class InMemoryUserStorage implements UserStorage {
             throw new ObjectNotFoundException("User");
         }
     }
+
     @Override
     public boolean isExists(User user) {
         return users.contains(user);

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
 @Getter
 @Component
 public class FilmService {
@@ -34,7 +33,6 @@ public class FilmService {
         User user = storageUser.getUserById(userId);
         film.getLikes().add(user);
         storage.update(film);
-
     }
 
     public void removeLike(int filmId, int userId) {
@@ -46,11 +44,14 @@ public class FilmService {
 
     public List<Film> findTopFilmsByLikes(int sizeOfTop) {
         List<Film> topFilms = storage.getAll().stream().collect(Collectors.toList());
-        Collections.sort(topFilms, Comparator.comparingInt(x -> - x.getLikes().size()));
+        Collections.sort(topFilms, Comparator.comparingInt(x -> -x.getLikes().size()));
         int currentSizeTop = sizeOfTop;
-        if (topFilms.size() > sizeOfTop) {
-            currentSizeTop = sizeOfTop;
+        if (!topFilms.isEmpty()) {
+            if (topFilms.size() < sizeOfTop) {
+                currentSizeTop = topFilms.size();
+            }
+            topFilms.subList(0, currentSizeTop);
         }
-        return topFilms.subList(0,currentSizeTop);
+        return topFilms;
     }
 }
