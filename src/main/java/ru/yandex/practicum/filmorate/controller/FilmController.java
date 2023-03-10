@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
@@ -45,6 +46,11 @@ public class FilmController {
     @GetMapping("/popular")
     public List<Film> findTopFilmsByLikes(@RequestParam(defaultValue = "10") int count) {
         return filmService.findTopFilmsByLikes(count);
+    }
+
+    @GetMapping("/{id}")
+    public Film findFilmById(@PathVariable("id") int idFilm) {
+        return filmService.getStorage().getFilmById(idFilm);
     }
 
     @GetMapping
