@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/films", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/films")
 public class FilmController {
 
     @Autowired

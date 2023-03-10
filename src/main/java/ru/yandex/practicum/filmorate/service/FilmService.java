@@ -8,9 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -31,14 +29,14 @@ public class FilmService {
     public void makeLike(int filmId, int userId) {
         Film film = storage.getFilmById(filmId);
         User user = storageUser.getUserById(userId);
-        film.getLikes().add(user);
+        film.getLikes().add(userId);
         storage.update(film);
     }
 
     public void removeLike(int filmId, int userId) {
         Film film = storage.getFilmById(filmId);
         User user = storageUser.getUserById(userId);
-        film.getLikes().remove(user);
+        film.getLikes().remove(userId);
         storage.update(film);
     }
 
@@ -50,8 +48,9 @@ public class FilmService {
             if (topFilms.size() < sizeOfTop) {
                 currentSizeTop = topFilms.size();
             }
-            topFilms.subList(0, currentSizeTop);
+            topFilms = topFilms.subList(0, currentSizeTop);
         }
         return topFilms;
     }
+
 }

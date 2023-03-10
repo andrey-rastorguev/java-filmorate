@@ -28,7 +28,7 @@ public class Film {
     @Positive
     private int duration;
 
-    private final Set<User> likes = new HashSet<>();
+    private final Set<Integer> likes = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
