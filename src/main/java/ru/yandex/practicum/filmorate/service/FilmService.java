@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -8,7 +7,9 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,11 +53,11 @@ public class FilmService {
         return topFilms;
     }
 
-    public Film addFilm (Film film) {
+    public Film addFilm(Film film) {
         return storage.add(film);
     }
 
-    public Film updateFilm (Film film) {
+    public Film updateFilm(Film film) {
         return storage.update(film);
     }
 
