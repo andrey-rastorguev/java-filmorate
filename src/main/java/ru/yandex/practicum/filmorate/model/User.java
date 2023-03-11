@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,6 +25,8 @@ public class User {
     @Past
     private LocalDate birthday;
 
+    private final Set<Integer> friends = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,7 +41,7 @@ public class User {
     }
 
     public String getName() {
-        if (name == null) {
+        if (name == null || name.equals("")) {
             return login;
         } else {
             return name;
