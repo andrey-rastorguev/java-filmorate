@@ -25,12 +25,12 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody @Valid Film film) {
-        return filmService.getStorage().add(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
     public Film update(@RequestBody @Valid Film film) {
-        return filmService.getStorage().update(film);
+        return filmService.updateFilm(film);
     }
 
     @PutMapping("/{id}/like/{userId}")
@@ -50,12 +50,12 @@ public class FilmController {
 
     @GetMapping("/{id}")
     public Film findFilmById(@PathVariable("id") int idFilm) {
-        return filmService.getStorage().getFilmById(idFilm);
+        return filmService.getFilmById(idFilm);
     }
 
     @GetMapping
     public List<Film> getAllFilms() {
-        return filmService.getStorage().getAll();
+        return filmService.getAllFilms();
     }
 
 }

@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody @Valid User user) {
-        return userService.getStorage().add(user);
+        return userService.addUser(user);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
@@ -49,13 +49,13 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody @Valid User user) {
-        userService.getStorage().update(user);
+        userService.updateUser(user);
         return user;
     }
 
     @GetMapping("/{id}")
     public User findUserById(@PathVariable("id") int idUser) {
-        return userService.getStorage().getUserById(idUser);
+        return userService.getUserById(idUser);
     }
 
     @GetMapping

@@ -14,9 +14,9 @@ class UserServiceTest {
 
     @BeforeEach
     private void initial() {
-        userService.getStorage().deleteAll();
+        userService.deleteAllUsers();
         for (int i = 1; i < 11; i++) {
-            userService.getStorage().add(new User(i, "mail" + i + "@mail.ru", "user" + i, "name" + i, LocalDate.of(1985, 3, i)));
+            userService.addUser(new User(i, "mail" + i + "@mail.ru", "user" + i, "name" + i, LocalDate.of(1985, 3, i)));
         }
     }
 
@@ -28,9 +28,9 @@ class UserServiceTest {
         userService.makeFriends(userId1, userId2);
         userService.makeFriends(userId2, userId3);
         userService.makeFriends(userId1, userId3);
-        User user1 = userService.getStorage().getUserById(userId1);
-        User user2 = userService.getStorage().getUserById(userId2);
-        User user3 = userService.getStorage().getUserById(userId3);
+        User user1 = userService.getUserById(userId1);
+        User user2 = userService.getUserById(userId2);
+        User user3 = userService.getUserById(userId3);
         Assertions.assertEquals(user1.getFriends().size(), 2, "Не верное количество друзей");
         Assertions.assertEquals(user2.getFriends().size(), 2, "Не верное количество друзей");
         Assertions.assertEquals(user3.getFriends().size(), 2, "Не верное количество друзей");
@@ -45,9 +45,9 @@ class UserServiceTest {
         userService.makeFriends(userId2, userId3);
         userService.makeFriends(userId1, userId3);
         userService.removeFriendForUser(userId1, userId3);
-        User user1 = userService.getStorage().getUserById(userId1);
-        User user2 = userService.getStorage().getUserById(userId2);
-        User user3 = userService.getStorage().getUserById(userId3);
+        User user1 = userService.getUserById(userId1);
+        User user2 = userService.getUserById(userId2);
+        User user3 = userService.getUserById(userId3);
         Assertions.assertEquals(user1.getFriends().size(), 1, "Не верное количество друзей");
         Assertions.assertEquals(user2.getFriends().size(), 2, "Не верное количество друзей");
         Assertions.assertEquals(user3.getFriends().size(), 2, "Не верное количество друзей");
@@ -65,7 +65,7 @@ class UserServiceTest {
         userService.makeFriends(userId1, userId3);
         userService.makeFriends(userId1, userId5);
         userService.makeFriends(userId4, userId5);
-        User user5 = userService.getStorage().getUserById(5);
+        User user5 = userService.getUserById(5);
         Assertions.assertEquals(1, userService.findMutualFriends(userId1, userId4).size(), "Не верное количество общих друзей");
         Assertions.assertTrue(userService.findMutualFriends(userId1, userId4).contains(user5), "Не верный общий друг");
     }

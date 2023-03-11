@@ -11,8 +11,6 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
-@Getter
 @Component
 public class FilmService {
 
@@ -40,6 +38,7 @@ public class FilmService {
         storage.update(film);
     }
 
+
     public List<Film> findTopFilmsByLikes(int sizeOfTop) {
         List<Film> topFilms = storage.getAll().stream().collect(Collectors.toList());
         Collections.sort(topFilms, Comparator.comparingInt(x -> -x.getLikes().size()));
@@ -53,4 +52,23 @@ public class FilmService {
         return topFilms;
     }
 
+    public Film addFilm (Film film) {
+        return storage.add(film);
+    }
+
+    public Film updateFilm (Film film) {
+        return storage.update(film);
+    }
+
+    public Film getFilmById(int idFilm) {
+        return storage.getFilmById(idFilm);
+    }
+
+    public List<Film> getAllFilms() {
+        return storage.getAll();
+    }
+
+    public void deleteAllFilms() {
+        storage.deleteAll();
+    }
 }

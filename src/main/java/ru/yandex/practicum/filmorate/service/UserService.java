@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.other.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -67,5 +68,21 @@ public class UserService {
             users.add(storage.getUserById(userId));
         }
         return users;
+    }
+
+    public User addUser (User user) {
+        return storage.add(user);
+    }
+
+    public User updateUser (User user) {
+        return storage.update(user);
+    }
+
+    public User getUserById(int idUser) {
+        return storage.getUserById(idUser);
+    }
+
+    public void deleteAllUsers() {
+        storage.deleteAll();
     }
 }
