@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.other.UpdateException;
-import ru.yandex.practicum.filmorate.repository.FilmRepository;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,23 +15,45 @@ import java.util.List;
 public class FilmController {
 
     @Autowired
-    private FilmRepository filmRepository;
+    private final FilmService filmService;
+
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping
     public Film create(@RequestBody @Valid Film film) {
-        filmRepository.add(film);
-        return film;
+        return filmService.addFilm(film);
     }
 
     @PutMapping
-    public Film update(@RequestBody @Valid Film film) throws UpdateException {
-        filmRepository.update(film);
-        return film;
+    public Film update(@RequestBody @Valid Film film) {
+        return filmService.updateFilm(film);
+    }
+
+    @PutMapping("/{id}/like/{userId}")
+    public void makeLike(@PathVariable("id") int filmId, @PathVariable("userId") int userId) {
+        filmService.makeLike(filmId,userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void removeLike(@PathVariable("id") int filmId, @PathVariable("userId") int userId) {
+        filmService.removeLike(filmId,userId);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> findTopFilmsByLikes(@RequestParam(defaultValue = "10") int count) {
+        return filmService.findTopFilmsByLikes(count);
+    }
+
+    @GetMapping("/{id}")
+    public Film findFilmById(@PathVariable("id") int idFilm) {
+        return filmService.getFilmById(idFilm);
     }
 
     @GetMapping
     public List<Film> getAllFilms() {
-        return filmRepository.getAll();
+        return filmService.getAllFilms();
     }
 
 }
