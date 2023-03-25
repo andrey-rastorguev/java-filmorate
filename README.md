@@ -6,12 +6,12 @@
 ### Получение списка всех фильмов 
 ```
 SELECT f.film_id, f.film_name, f.description, r.mpa_rating_name, f.release_date, f.duration   
-FROM film f
+FROM films f
 LEFT JOIN mpa_rating r ON f.mpa_rating_id = r.mpa_rating_id
 ```
 ### Получение списка всех пользователей
 ```
-SELECT * FROM user
+SELECT * FROM users
 ```
 ### Список общих подтвержденных друзей с другим пользователем
 ```
@@ -27,7 +27,7 @@ AND f2.friend_to_accept
 ### Получение списка 10 лучших фильмов
 ```
 SELECT f.film_id, f.film_name, COUNT(l.like_id) as count_like
-FROM film f
+FROM films f
 LEFT JOIN likes l ON f.film_id = l.film_id
 GROUP BY f.film_id
 ORDER BY count_like DESC
