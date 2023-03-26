@@ -28,6 +28,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public void deleteAll() {
         users.clear();
+        nextId = 1;
     }
 
     @Override

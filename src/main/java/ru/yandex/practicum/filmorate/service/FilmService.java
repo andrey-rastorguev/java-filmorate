@@ -28,21 +28,21 @@ public class FilmService {
     public void makeLike(int filmId, int userId) {
         Film film = storage.getFilmById(filmId);
         User user = storageUser.getUserById(userId);
-        film.getLikes().add(userId);
+        film.addLike(userId);
         storage.update(film);
     }
 
     public void removeLike(int filmId, int userId) {
         Film film = storage.getFilmById(filmId);
         User user = storageUser.getUserById(userId);
-        film.getLikes().remove(userId);
+        film.removeLike(userId);
         storage.update(film);
     }
 
 
     public List<Film> findTopFilmsByLikes(int sizeOfTop) {
         List<Film> topFilms = storage.getAll().stream().collect(Collectors.toList());
-        Collections.sort(topFilms, Comparator.comparingInt(x -> -x.getLikes().size()));
+        Collections.sort(topFilms, Comparator.comparingInt(x -> -x.getCountLikes()));
         int currentSizeTop = sizeOfTop;
         if (!topFilms.isEmpty()) {
             if (topFilms.size() < sizeOfTop) {

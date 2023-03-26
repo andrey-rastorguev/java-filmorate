@@ -28,6 +28,8 @@ public class Film {
     @Positive
     private int duration;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private final Set<Integer> likes = new HashSet<>();
 
     @Override
@@ -43,4 +45,15 @@ public class Film {
         return Objects.hash(id);
     }
 
+    public void addLike(int idUser) {
+        likes.add(idUser);
+    }
+
+    public void removeLike(int idUser) {
+        likes.remove(idUser);
+    }
+
+    public int getCountLikes() {
+        return likes.size();
+    }
 }

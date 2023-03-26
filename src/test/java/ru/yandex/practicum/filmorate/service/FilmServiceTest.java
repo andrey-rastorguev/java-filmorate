@@ -3,18 +3,20 @@ package ru.yandex.practicum.filmorate.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.other.TestTools;
 
 import java.time.LocalDate;
 import java.util.List;
 
-
+@SpringBootTest
 class FilmServiceTest {
-
-    private UserService userService = TestTools.getUserService();
-    private FilmService filmService = TestTools.getFilmService(userService.getStorage());
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private FilmService filmService;
 
 
     @BeforeEach
@@ -35,7 +37,7 @@ class FilmServiceTest {
         Film film = filmService.getFilmById(filmId);
         filmService.makeLike(filmId, userId1);
         filmService.makeLike(filmId, userId2);
-        Assertions.assertEquals(2, film.getLikes().size(), "Неверное количество лайков");
+        Assertions.assertEquals(2, film.getCountLikes(), "Неверное количество лайков");
     }
 
     @Test
@@ -47,7 +49,7 @@ class FilmServiceTest {
         filmService.makeLike(filmId, userId2);
         filmService.removeLike(filmId, userId1);
         Film film = filmService.getFilmById(1);
-        Assertions.assertEquals(1, film.getLikes().size(), "Неверное количество лайков");
+        Assertions.assertEquals(1, film.getCountLikes(), "Неверное количество лайков");
     }
 
     @Test
@@ -60,7 +62,7 @@ class FilmServiceTest {
         filmService.removeLike(filmId, userId1);
         filmService.removeLike(filmId, userId2);
         Film film = filmService.getFilmById(1);
-        Assertions.assertEquals(0, film.getLikes().size(), "Неверное количество лайков");
+        Assertions.assertEquals(0, film.getCountLikes(), "Неверное количество лайков");
     }
 
     @Test
@@ -73,7 +75,7 @@ class FilmServiceTest {
         List<Film> filmsTop = filmService.findTopFilmsByLikes(10);
         for (int i = 0; i < 10; i++) {
             Film film = filmsTop.get(i);
-            Assertions.assertEquals(film.getLikes().size(), 20 - i, "Неправильный вывод топа фильмов");
+            Assertions.assertEquals(film.getCountLikes(), 20 - i, "Неправильный вывод топа фильмов");
         }
     }
 }

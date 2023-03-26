@@ -3,14 +3,16 @@ package ru.yandex.practicum.filmorate.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.other.TestTools;
 
 import java.time.LocalDate;
-
+@SpringBootTest
 class UserServiceTest {
 
-    private UserService userService = TestTools.getUserService();
+    @Autowired
+    private UserService userService;
 
     @BeforeEach
     private void initial() {
@@ -31,9 +33,9 @@ class UserServiceTest {
         User user1 = userService.getUserById(userId1);
         User user2 = userService.getUserById(userId2);
         User user3 = userService.getUserById(userId3);
-        Assertions.assertEquals(user1.getFriends().size(), 2, "Не верное количество друзей");
-        Assertions.assertEquals(user2.getFriends().size(), 2, "Не верное количество друзей");
-        Assertions.assertEquals(user3.getFriends().size(), 2, "Не верное количество друзей");
+        Assertions.assertEquals(user1.getAllFriends().size(), 2, "Не верное количество друзей");
+        Assertions.assertEquals(user2.getAllFriends().size(), 2, "Не верное количество друзей");
+        Assertions.assertEquals(user3.getAllFriends().size(), 2, "Не верное количество друзей");
     }
 
     @Test
@@ -48,9 +50,9 @@ class UserServiceTest {
         User user1 = userService.getUserById(userId1);
         User user2 = userService.getUserById(userId2);
         User user3 = userService.getUserById(userId3);
-        Assertions.assertEquals(user1.getFriends().size(), 1, "Не верное количество друзей");
-        Assertions.assertEquals(user2.getFriends().size(), 2, "Не верное количество друзей");
-        Assertions.assertEquals(user3.getFriends().size(), 2, "Не верное количество друзей");
+        Assertions.assertEquals(user1.getAllFriends().size(), 1, "Не верное количество друзей");
+        Assertions.assertEquals(user2.getAllFriends().size(), 2, "Не верное количество друзей");
+        Assertions.assertEquals(user3.getAllFriends().size(), 2, "Не верное количество друзей");
     }
 
     @Test
