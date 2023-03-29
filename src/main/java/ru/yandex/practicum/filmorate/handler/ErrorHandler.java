@@ -15,6 +15,7 @@ public class ErrorHandler {
     ErrorResponse handlerObjectNotFound(final ObjectNotFoundException e) {
         return new ErrorResponse(e.getMessage());
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     ErrorResponse handlerItemOfDictionaryNotFound(final ItemOfDictionaryNotFoundException e) {
