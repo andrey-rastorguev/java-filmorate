@@ -5,16 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
 public class User {
     @Positive
@@ -29,7 +24,29 @@ public class User {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private final Set<Integer> friends = new HashSet<>();
+    private final Map<Integer,Boolean> friends;
+
+    public User() {
+        this.friends = new HashMap<>();
+    }
+
+    public User(@Positive int id, @Email String email, @Pattern(regexp = "\\S+") String login, String name, @Past LocalDate birthday) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.name = name;
+        this.birthday = birthday;
+        this.friends = new HashMap<>();
+    }
+
+    public User(@Positive int id, @Email String email, @Pattern(regexp = "\\S+") String login, String name, @Past LocalDate birthday, Map<Integer, Boolean> friends) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.name = name;
+        this.birthday = birthday;
+        this.friends = friends;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,16 +69,25 @@ public class User {
         }
     }
 
-    public void addFriend(int idFriend) {
-        friends.add(idFriend);
+
+    public void addFriend(int friendId) {
+        friends.put(friendId,false);
+    }
+
+    public void acceptFriend(int friendId) {
+        friends.put(friendId,true);
     }
 
     public void removeFriend(int idFriend) {
         friends.remove(idFriend);
     }
 
-    public List<Integer> getAllFriends() {
-        return friends.stream().collect(Collectors.toList());
+    public List<Integer> getFriends() {
+        return friends.keySet().stream().filter(id -> friends.get(id)).collect(Collectors.toList());
+    }
+
+    public Map<Integer,Boolean> allFriendships() {
+        return friends;
     }
 
 }

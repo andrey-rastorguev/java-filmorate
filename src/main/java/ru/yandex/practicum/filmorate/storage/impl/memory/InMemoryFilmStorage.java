@@ -1,13 +1,14 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.impl.memory;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.other.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.other.exception.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Component("memoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
     private List<Film> films = new ArrayList<>();
     private int nextId = 1;

@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -16,10 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    @Qualifier("dbUserStorage")
     @Autowired
     private final UserStorage storage;
 
-    public UserService(UserStorage userStorage) {
+    public UserService(@Qualifier("dbUserStorage") UserStorage userStorage) {
         this.storage = userStorage;
     }
 
@@ -28,33 +30,38 @@ public class UserService {
     }
 
 
-    public void makeFriends(int userId1, int userId2) {
-        User user1 = storage.getUserById(userId1);
-        User user2 = storage.getUserById(userId2);
-        user1.addFriend(userId2);
-        user2.addFriend(userId1);
-        storage.update(user1);
-        storage.update(user2);
+    public User makeFriends(int fromUserId, int toUserId) {
+        User fromUser = storage.getUserById(fromUserId);
+        User toUser = storage.getUserById(toUserId);
+        fromUser.addFriend(toUserId);
+        fromUser.acceptFriend(toUserId);
+        toUser.addFriend(fromUserId);
+        storage.update(fromUser);
+        storage.update(toUser);
+        return fromUser;
     }
 
     public User removeFriendForUser(int userId, int friendId) {
         User user = storage.getUserById(userId);
         User friend = storage.getUserById(friendId);
         user.removeFriend(friendId);
-        return storage.update(user);
+        friend.removeFriend(userId);
+        storage.update(user);
+        storage.update(friend);
+        return user;
     }
 
     public List<User> findFriends(int userId) {
         User user = storage.getUserById(userId);
-        return getUsersFromListId(user.getAllFriends());
+        return getUsersFromListId(user.getFriends());
     }
 
     public List<User> findMutualFriends(int userId1, int userId2) {
         User user1 = storage.getUserById(userId1);
         User user2 = storage.getUserById(userId2);
         Set<Integer> mutualFriends = new HashSet<>();
-        for (Integer friendId : user1.getAllFriends()) {
-            if (user2.getAllFriends().contains(friendId)) {
+        for (Integer friendId : user1.getFriends()) {
+            if (user2.getFriends().contains(friendId)) {
                 mutualFriends.add(friendId);
             }
         }

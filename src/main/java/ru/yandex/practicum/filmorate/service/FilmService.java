@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -15,12 +16,14 @@ import java.util.stream.Collectors;
 @Component
 public class FilmService {
 
+    @Qualifier("dbFilmStorage")
     @Autowired
     private final FilmStorage storage;
+    @Qualifier("dbUserStorage")
     @Autowired
     private final UserStorage storageUser;
 
-    public FilmService(FilmStorage storage, UserStorage storageUser) {
+    public FilmService(@Qualifier("dbFilmStorage") FilmStorage storage, @Qualifier("dbUserStorage") UserStorage storageUser) {
         this.storage = storage;
         this.storageUser = storageUser;
     }
@@ -42,7 +45,7 @@ public class FilmService {
 
     public List<Film> findTopFilmsByLikes(int sizeOfTop) {
         List<Film> topFilms = storage.getAll().stream().collect(Collectors.toList());
-        Collections.sort(topFilms, Comparator.comparingInt(x -> -x.getCountLikes()));
+        Collections.sort(topFilms, Comparator.comparingInt(x -> -x.countLikes()));
         int currentSizeTop = sizeOfTop;
         if (!topFilms.isEmpty()) {
             if (topFilms.size() < sizeOfTop) {
