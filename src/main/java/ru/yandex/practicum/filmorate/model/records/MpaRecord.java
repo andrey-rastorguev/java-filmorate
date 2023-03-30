@@ -5,18 +5,37 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.yandex.practicum.filmorate.other.Constants;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.util.Objects;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class MpaRecord {
+    @Positive
     private int id;
+    @Pattern(regexp = "[A-Z0-9-]]*")
     private String name;
 
-    public MpaRecord(int id) {
+    public MpaRecord(@Positive int id) {
         this.id = id;
-        this.name = Constants.MPA_VALUES.get(id);
+    }
+
+    public MpaRecord(@Positive int id, String name) {
+        this.id = id;
+        if (name == null) {
+            this.name = Constants.MPA_VALUES.get(id);
+        } else {
+            this.name = name;
+        }
+    }
+
+    public String getName() {
+        if (name == null) {
+            return Constants.MPA_VALUES.get(id);
+        } else {
+            return name;
+        }
     }
 
     @Override

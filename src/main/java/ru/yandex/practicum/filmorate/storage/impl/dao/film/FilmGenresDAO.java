@@ -54,7 +54,7 @@ public class FilmGenresDAO implements GenresStorage {
 
     public void updateAll(Film film) {
         Set<GenreRecord> dbGenres = load(film.getId());
-        Set<GenreRecord> genres = film.getSetGenres();
+        Set<GenreRecord> genres = film.createSetGenres();
         for (GenreRecord genre : genres) {
             if (!dbGenres.contains(genre)) {
                 insertFilmGenre(film.getId(), genre);
