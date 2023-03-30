@@ -31,7 +31,7 @@ public class Film {
     @Size(max = 200)
     private String description;
 
-    private MpaRecord mpa;
+    private MpaRecord MPA;
 
     @FilmDateReleaseDateTrue
     private LocalDate releaseDate;
@@ -52,7 +52,7 @@ public class Film {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.mpa = MPA;
+        this.MPA = MPA;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.genres = new HashSet<>();
@@ -63,7 +63,7 @@ public class Film {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.mpa = MPA;
+        this.MPA = MPA;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.genres = genres.stream().collect(Collectors.toSet());

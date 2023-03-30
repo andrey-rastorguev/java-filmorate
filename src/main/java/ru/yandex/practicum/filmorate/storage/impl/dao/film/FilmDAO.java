@@ -5,9 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.records.GenreRecord;
-import ru.yandex.practicum.filmorate.model.records.IdentifyRecord;
 import ru.yandex.practicum.filmorate.model.records.MpaRecord;
-import ru.yandex.practicum.filmorate.other.Constants;
 import ru.yandex.practicum.filmorate.other.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.GenresStorage;
@@ -88,7 +86,7 @@ public class FilmDAO implements FilmStorage {
         jdbcTemplate.update(sqlUser,
                 film.getName(),
                 film.getDescription(),
-                film.getMpa().getId(),
+                film.getMPA().getId(),
                 film.getReleaseDate(),
                 film.getDuration());
         film.setId(getLastFilmId());
@@ -101,7 +99,7 @@ public class FilmDAO implements FilmStorage {
             jdbcTemplate.update(sql,
                     film.getName(),
                     film.getDescription(),
-                    film.getMpa().getId(),
+                    film.getMPA().getId(),
                     film.getReleaseDate(),
                     film.getDuration(),
                     film.getId());
