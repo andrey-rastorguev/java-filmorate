@@ -122,12 +122,12 @@ public class FilmDAO implements FilmStorage {
         Integer id = rs.getInt("film_id");
         String name = rs.getString("film_name");
         String description = rs.getString("description");
-        MpaRecord MPA = mpaStorage.getMpaById(rs.getInt("mpa_rating_id"));
+        MpaRecord mpa = mpaStorage.getMpaById(rs.getInt("mpa_rating_id"));
         LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
         Integer duration = rs.getInt("duration");
         Set<Integer> likes = likeStorage.load(id);
         Set<GenreRecord> genres = genreStorage.load(id);
-        Film film = new Film(id, name, description, MPA, releaseDate, duration, genres.stream().collect(Collectors.toList()), likes);
+        Film film = new Film(id, name, description, mpa, releaseDate, duration, genres.stream().collect(Collectors.toList()), likes);
         return film;
     }
 
