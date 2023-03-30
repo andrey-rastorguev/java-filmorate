@@ -8,9 +8,14 @@ import java.util.Set;
 
 public interface GenresStorage {
     List<GenreRecord> getAll();
+
     GenreRecord getGenreById(int idGenre);
+
     GenreRecord getGenreByName(String nameGenre);
+
     void saveAll(Film film);
+
     void updateAll(Film film);
+
     Set<GenreRecord> load(int filmId);
 }
