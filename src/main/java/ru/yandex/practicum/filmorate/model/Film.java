@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.records.MpaRecord;
 import ru.yandex.practicum.filmorate.validator.FilmDateReleaseDateTrue;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class Film {
     private String name;
     @Size(max = 200)
     private String description;
+
     private MpaRecord mpa;
 
     @FilmDateReleaseDateTrue
@@ -46,7 +48,7 @@ public class Film {
         this.likes = new HashSet<>();
     }
 
-    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description, MpaRecord MPA, LocalDate releaseDate, @Positive int duration) {
+    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description, @Pattern(regexp = "^[a-z]([a-zA-Z0-9]*)?$") MpaRecord MPA, LocalDate releaseDate, @Positive int duration) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,7 +59,7 @@ public class Film {
         this.likes = new HashSet<>();
     }
 
-    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description, MpaRecord MPA, LocalDate releaseDate, @Positive int duration, List<GenreRecord> genres, Set<Integer> likes) {
+    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description,  @Pattern(regexp = "^[a-z]([a-zA-Z0-9]*)?$") MpaRecord MPA, LocalDate releaseDate, @Positive int duration, List<GenreRecord> genres, Set<Integer> likes) {
         this.id = id;
         this.name = name;
         this.description = description;
