@@ -2,6 +2,10 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import ru.yandex.practicum.filmorate.model.records.GenreRecord;
+import ru.yandex.practicum.filmorate.model.records.IdentifyRecord;
+import ru.yandex.practicum.filmorate.model.records.MpaRecord;
+import ru.yandex.practicum.filmorate.other.Constants;
 import ru.yandex.practicum.filmorate.validator.FilmDateReleaseDateTrue;
 
 import javax.validation.constraints.*;
@@ -23,7 +27,7 @@ public class Film {
     private String name;
     @Size(max = 200)
     private String description;
-    private MpaRecord MPA;
+    private MpaRecord mpa;
 
     @FilmDateReleaseDateTrue
     private LocalDate releaseDate;
@@ -33,8 +37,7 @@ public class Film {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private final Set<Integer> likes;
-
+    private Set<Integer> likes;
 
     public Film() {
         this.genres = new HashSet<>();
@@ -45,7 +48,7 @@ public class Film {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.MPA = MPA;
+        this.mpa = MPA;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.genres = new HashSet<>();
@@ -56,7 +59,7 @@ public class Film {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.MPA = MPA;
+        this.mpa = MPA;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.genres = genres.stream().collect(Collectors.toSet());
@@ -69,6 +72,10 @@ public class Film {
         if (o == null || getClass() != o.getClass()) return false;
         Film film = (Film) o;
         return id == film.id;
+    }
+
+    public String getMpa() {
+        return Constants.MPA_VALUES.get(mpa.getId());
     }
 
     public List<GenreRecord> getGenres() {

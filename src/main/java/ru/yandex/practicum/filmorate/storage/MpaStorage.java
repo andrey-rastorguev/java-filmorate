@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import ru.yandex.practicum.filmorate.model.MpaRecord;
+import ru.yandex.practicum.filmorate.model.records.MpaRecord;
 
 import java.util.List;
 

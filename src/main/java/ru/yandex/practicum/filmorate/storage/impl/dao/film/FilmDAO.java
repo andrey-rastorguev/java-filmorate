@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.GenreRecord;
-import ru.yandex.practicum.filmorate.model.MpaRecord;
+import ru.yandex.practicum.filmorate.model.records.GenreRecord;
+import ru.yandex.practicum.filmorate.model.records.IdentifyRecord;
+import ru.yandex.practicum.filmorate.model.records.MpaRecord;
+import ru.yandex.practicum.filmorate.other.Constants;
 import ru.yandex.practicum.filmorate.other.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.GenresStorage;
@@ -86,7 +88,7 @@ public class FilmDAO implements FilmStorage {
         jdbcTemplate.update(sqlUser,
                 film.getName(),
                 film.getDescription(),
-                film.getMPA().getId(),
+                Constants.MPA_KEYS.get(film.getMpa()),
                 film.getReleaseDate(),
                 film.getDuration());
         film.setId(getLastFilmId());
@@ -99,7 +101,7 @@ public class FilmDAO implements FilmStorage {
             jdbcTemplate.update(sql,
                     film.getName(),
                     film.getDescription(),
-                    film.getMPA().getId(),
+                    Constants.MPA_KEYS.get(film.getMpa()),
                     film.getReleaseDate(),
                     film.getDuration(),
                     film.getId());
@@ -122,7 +124,7 @@ public class FilmDAO implements FilmStorage {
         Integer id = rs.getInt("film_id");
         String name = rs.getString("film_name");
         String description = rs.getString("description");
-        MpaRecord MPA = mpaStorage.getMpaById((rs.getInt("mpa_rating_id")));
+        MpaRecord MPA = new MpaRecord(rs.getInt("mpa_rating_id"));
         LocalDate releaseDate = rs.getDate("release_date").toLocalDate();
         Integer duration = rs.getInt("duration");
         Set<Integer> likes = likeStorage.load(id);

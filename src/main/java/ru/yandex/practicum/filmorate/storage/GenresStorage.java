@@ -1,8 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.GenreRecord;
-import ru.yandex.practicum.filmorate.model.MpaRecord;
+import ru.yandex.practicum.filmorate.model.records.GenreRecord;
 
 import java.util.List;
 import java.util.Set;

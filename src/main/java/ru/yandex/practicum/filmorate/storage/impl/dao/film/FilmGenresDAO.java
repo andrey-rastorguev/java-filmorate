@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.GenreRecord;
+import ru.yandex.practicum.filmorate.model.records.GenreRecord;
 import ru.yandex.practicum.filmorate.other.exception.ItemOfDictionaryNotFoundException;
 import ru.yandex.practicum.filmorate.storage.GenresStorage;
 

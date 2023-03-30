@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage.impl.dao.film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.MpaRecord;
+import ru.yandex.practicum.filmorate.model.records.MpaRecord;
 import ru.yandex.practicum.filmorate.other.exception.ItemOfDictionaryNotFoundException;
 import ru.yandex.practicum.filmorate.storage.MpaStorage;
 
