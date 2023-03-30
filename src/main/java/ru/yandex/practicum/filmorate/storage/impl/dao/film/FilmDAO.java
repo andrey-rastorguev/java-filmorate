@@ -86,7 +86,7 @@ public class FilmDAO implements FilmStorage {
         jdbcTemplate.update(sqlUser,
                 film.getName(),
                 film.getDescription(),
-                film.getMPA().getId(),
+                film.getMpa().getId(),
                 film.getReleaseDate(),
                 film.getDuration());
         film.setId(getLastFilmId());
@@ -99,7 +99,7 @@ public class FilmDAO implements FilmStorage {
             jdbcTemplate.update(sql,
                     film.getName(),
                     film.getDescription(),
-                    film.getMPA().getId(),
+                    film.getMpa().getId(),
                     film.getReleaseDate(),
                     film.getDuration(),
                     film.getId());
