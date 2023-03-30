@@ -14,7 +14,7 @@ import java.util.Objects;
 public class MpaRecord {
     @Positive
     private int id;
-    @Pattern(regexp = "[A-Z0-9-]]*")
+    @Pattern(regexp = "^[a-z]([a-zA-Z0-9]*)?$")
     private String name;
 
     public MpaRecord(@Positive int id) {
