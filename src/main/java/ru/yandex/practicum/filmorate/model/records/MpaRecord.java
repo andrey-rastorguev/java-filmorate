@@ -21,7 +21,7 @@ public class MpaRecord {
         this.id = id;
     }
 
-    public MpaRecord(@Positive int id, String name) {
+    public MpaRecord(@Positive int id, @Pattern(regexp = "^[a-z]([a-zA-Z0-9]*)?$") String name) {
         this.id = id;
         if (name == null) {
             this.name = Constants.MPA_VALUES.get(id);
