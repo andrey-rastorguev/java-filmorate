@@ -24,7 +24,7 @@ public class User {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private final Map<Integer,Boolean> friends;
+    private final Map<Integer, Boolean> friends;
 
     public User() {
         this.friends = new HashMap<>();
@@ -71,11 +71,11 @@ public class User {
 
 
     public void addFriend(int friendId) {
-        friends.put(friendId,false);
+        friends.put(friendId, false);
     }
 
     public void acceptFriend(int friendId) {
-        friends.put(friendId,true);
+        friends.put(friendId, true);
     }
 
     public void removeFriend(int idFriend) {
@@ -86,7 +86,7 @@ public class User {
         return friends.keySet().stream().filter(id -> friends.get(id)).collect(Collectors.toList());
     }
 
-    public Map<Integer,Boolean> allFriendships() {
+    public Map<Integer, Boolean> allFriendships() {
         return friends;
     }
 

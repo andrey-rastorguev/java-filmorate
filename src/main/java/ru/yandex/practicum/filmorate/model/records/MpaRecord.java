@@ -1,11 +1,9 @@
 package ru.yandex.practicum.filmorate.model.records;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import ru.yandex.practicum.filmorate.other.Constants;
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.util.Objects;
 

@@ -70,17 +70,17 @@ public class UserService {
 
     private List<User> getUsersFromListId(List<Integer> setUsersId) {
         List<User> users = new ArrayList<>();
-        for (Integer userId: setUsersId) {
+        for (Integer userId : setUsersId) {
             users.add(storage.getUserById(userId));
         }
         return users;
     }
 
-    public User addUser (User user) {
+    public User addUser(User user) {
         return storage.add(user);
     }
 
-    public User updateUser (User user) {
+    public User updateUser(User user) {
         return storage.update(user);
     }
 

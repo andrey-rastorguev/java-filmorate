@@ -58,7 +58,7 @@ public class Film {
         this.likes = new HashSet<>();
     }
 
-    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description,  MpaRecord mpa, LocalDate releaseDate, @Positive int duration, List<GenreRecord> genres, Set<Integer> likes) {
+    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description, MpaRecord mpa, LocalDate releaseDate, @Positive int duration, List<GenreRecord> genres, Set<Integer> likes) {
         this.id = id;
         this.name = name;
         this.description = description;
