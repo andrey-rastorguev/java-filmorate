@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.impl.dao.film;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -21,15 +20,20 @@ import java.util.stream.Collectors;
 
 @Component("dbFilmStorage")
 public class FilmDAO implements FilmStorage {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private LikeStorage likeStorage;
-    @Autowired
-    private MpaStorage mpaStorage;
-    @Autowired
-    private GenresStorage genreStorage;
+    private final LikeStorage likeStorage;
+
+    private final MpaStorage mpaStorage;
+
+    private final GenresStorage genreStorage;
+
+    public FilmDAO(JdbcTemplate jdbcTemplate, LikeStorage likeStorage, MpaStorage mpaStorage, GenresStorage genreStorage) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.likeStorage = likeStorage;
+        this.mpaStorage = mpaStorage;
+        this.genreStorage = genreStorage;
+    }
 
     @Override
     public Film add(Film film) {

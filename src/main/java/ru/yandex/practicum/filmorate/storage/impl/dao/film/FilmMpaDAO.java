@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.impl.dao.film;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.records.MpaRecord;
@@ -15,8 +14,11 @@ import java.util.List;
 @Component
 public class FilmMpaDAO implements MpaStorage {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
+    public FilmMpaDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<MpaRecord> getAll() {
         String sql = "SELECT mpa_rating_id, mpa_rating_code FROM mpa_rating";
@@ -46,7 +48,7 @@ public class FilmMpaDAO implements MpaStorage {
     private MpaRecord makeMpa(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("mpa_rating_id");
         String code = rs.getString("mpa_rating_code");
-        return new MpaRecord(id,code);
+        return new MpaRecord(id, code);
     }
 
 }

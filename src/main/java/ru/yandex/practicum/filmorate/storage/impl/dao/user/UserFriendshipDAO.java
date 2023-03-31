@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.impl.dao.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
@@ -13,8 +12,12 @@ import java.util.stream.IntStream;
 
 @Component
 public class UserFriendshipDAO implements FriendshipStorage {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public UserFriendshipDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void saveAll(User user) {
         Map<Integer, Boolean> friendships = user.allFriendships();
