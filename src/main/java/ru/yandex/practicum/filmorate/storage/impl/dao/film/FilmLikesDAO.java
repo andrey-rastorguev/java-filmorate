@@ -14,11 +14,15 @@ import java.util.stream.Collectors;
 public class FilmLikesDAO implements LikeStorage {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
+    public FilmLikesDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void saveAll(Film film) {
         List<Integer> likes = film.getLikes();
-        for (Integer userId: likes) {
+        for (Integer userId : likes) {
             insertLike(film.getId(), userId);
         }
     }
@@ -26,12 +30,12 @@ public class FilmLikesDAO implements LikeStorage {
     public void updateAll(Film film) {
         Set<Integer> dbLikes = load(film.getId());
         List<Integer> likes = film.getLikes();
-        for (int userId: likes) {
+        for (int userId : likes) {
             if (!dbLikes.contains(userId)) {
                 insertLike(film.getId(), userId);
             }
         }
-        for (int dbUserId: dbLikes) {
+        for (int dbUserId : dbLikes) {
             if (!likes.contains(dbUserId)) {
                 remove(film.getId(), dbUserId);
             }
@@ -40,7 +44,7 @@ public class FilmLikesDAO implements LikeStorage {
 
     public Set<Integer> load(int filmId) {
         String sql = "SELECT user_id FROM likes WHERE film_id = ?;";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("user_id"),filmId).stream().collect(Collectors.toSet());
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("user_id"), filmId).stream().collect(Collectors.toSet());
     }
 
     private void remove(int filmId, int userId) {

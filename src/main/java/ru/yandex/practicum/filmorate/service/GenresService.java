@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.records.GenreRecord;
 import ru.yandex.practicum.filmorate.storage.GenresStorage;
@@ -9,8 +8,12 @@ import java.util.List;
 
 @Service
 public class GenresService {
-    @Autowired
-    private GenresStorage genreStorage;
+
+    private final GenresStorage genreStorage;
+
+    public GenresService(GenresStorage genreStorage) {
+        this.genreStorage = genreStorage;
+    }
 
     public List<GenreRecord> getAll() {
         return genreStorage.getAll();

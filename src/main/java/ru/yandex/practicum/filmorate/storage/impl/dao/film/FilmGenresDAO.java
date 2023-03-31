@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.impl.dao.film;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -17,8 +16,11 @@ import java.util.stream.Collectors;
 @Component
 public class FilmGenresDAO implements GenresStorage {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
+    public FilmGenresDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<GenreRecord> getAll() {
         String sql = "SELECT genre_id, genre_name FROM genres";

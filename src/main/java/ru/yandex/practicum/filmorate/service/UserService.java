@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Qualifier("dbUserStorage")
-    @Autowired
     private final UserStorage storage;
 
     public UserService(@Qualifier("dbUserStorage") UserStorage userStorage) {
