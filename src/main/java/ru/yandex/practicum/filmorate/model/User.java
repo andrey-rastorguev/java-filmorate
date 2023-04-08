@@ -3,7 +3,10 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,6 +14,9 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Slf4j
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Positive
     private int id = 1;
@@ -22,31 +28,7 @@ public class User {
     @Past
     private LocalDate birthday;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private final Map<Integer, Boolean> friends;
-
-    public User() {
-        this.friends = new HashMap<>();
-    }
-
-    public User(@Positive int id, @Email String email, @Pattern(regexp = "\\S+") String login, String name, @Past LocalDate birthday) {
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
-        this.friends = new HashMap<>();
-    }
-
-    public User(@Positive int id, @Email String email, @Pattern(regexp = "\\S+") String login, String name, @Past LocalDate birthday, Map<Integer, Boolean> friends) {
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
-        this.friends = friends;
-    }
+    private Map<Integer, Boolean> friends;
 
     @Override
     public boolean equals(Object o) {
@@ -83,11 +65,19 @@ public class User {
     }
 
     public List<Integer> getFriends() {
-        return friends.keySet().stream().filter(id -> friends.get(id)).collect(Collectors.toList());
+        if (friends == null) {
+            return new ArrayList<>();
+        } else {
+            return friends.keySet().stream().filter(id -> friends.get(id)).collect(Collectors.toList());
+        }
     }
 
     public Map<Integer, Boolean> allFriendships() {
-        return friends;
+        if (friends == null) {
+            return new HashMap<>();
+        } else {
+            return friends;
+        }
     }
 
 }

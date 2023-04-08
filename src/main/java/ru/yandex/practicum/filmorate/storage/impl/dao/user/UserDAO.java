@@ -9,9 +9,7 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Component("dbUserStorage")
 public class UserDAO implements UserStorage {
@@ -75,28 +73,36 @@ public class UserDAO implements UserStorage {
 
     private User makeUser(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("user_id");
-        String email = rs.getString("email");
-        String login = rs.getString("login");
-        String name = rs.getString("user_name");
-        LocalDate birthday = rs.getDate("birthday").toLocalDate();
-        Map<Integer, Boolean> friends = friendshipStorage.load(id);
-        User user = new User(id, email, login, name, birthday, friends);
+        User user = User.builder()
+                .id(id)
+                .email(rs.getString("email"))
+                .login(rs.getString("login"))
+                .name(rs.getString("user_name"))
+                .birthday(rs.getDate("birthday").toLocalDate())
+                .friends(friendshipStorage.load(id))
+                .build();
         return user;
     }
 
     private int getLastUserId() {
         String sql = "SELECT * FROM users ORDER BY user_id DESC LIMIT 1";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("user_id")).get(0);
+        List<Integer> ids = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("user_id"));
+        if (ids.size() == 0) {
+            return 0;
+        } else {
+            return ids.get(0);
+        }
     }
 
     private User insertUser(User user) {
-        String sql = "INSERT INTO users (email, login, user_name, birthday) VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO users (user_id, email, login, user_name, birthday) VALUES (?, ?, ?, ?, ?);";
+        user.setId(getLastUserId() + 1);
         jdbcTemplate.update(sql,
+                user.getId(),
                 user.getEmail(),
                 user.getLogin(),
                 user.getName(),
                 user.getBirthday());
-        user.setId(getLastUserId());
         return user;
     }
 

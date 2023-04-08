@@ -1,23 +1,17 @@
 package ru.yandex.practicum.filmorate.model.records;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class GenreRecord {
     private int id;
     private String name;
-
-    public GenreRecord() {
-    }
-
-    public GenreRecord(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {

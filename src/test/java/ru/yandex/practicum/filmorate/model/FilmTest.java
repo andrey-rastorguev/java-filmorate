@@ -1,15 +1,15 @@
 package ru.yandex.practicum.filmorate.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilmTest {
     private static Validator validator;

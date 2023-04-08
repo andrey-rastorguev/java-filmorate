@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model.records;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import ru.yandex.practicum.filmorate.other.Constants;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@Builder
 public class MpaRecord {
     @Positive
     private int id;

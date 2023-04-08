@@ -9,7 +9,7 @@ import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserTest {
     private static Validator validator;

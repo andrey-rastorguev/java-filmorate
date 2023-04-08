@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.model.records.GenreRecord;
 import ru.yandex.practicum.filmorate.model.records.MpaRecord;
@@ -12,15 +10,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
+@Builder
 @Getter
 @Setter
-@Slf4j
+@AllArgsConstructor
+@NoArgsConstructor
 public class Film {
 
     @Positive
@@ -38,36 +36,7 @@ public class Film {
     private int duration;
     private Set<GenreRecord> genres;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     private Set<Integer> likes;
-
-    public Film() {
-        this.genres = new HashSet<>();
-        this.likes = new HashSet<>();
-    }
-
-    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description, MpaRecord mpa, LocalDate releaseDate, @Positive int duration) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.mpa = mpa;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.genres = new HashSet<>();
-        this.likes = new HashSet<>();
-    }
-
-    public Film(@Positive int id, @NotBlank String name, @Size(max = 200) String description, MpaRecord mpa, LocalDate releaseDate, @Positive int duration, List<GenreRecord> genres, Set<Integer> likes) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.mpa = mpa;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.genres = genres.stream().collect(Collectors.toSet());
-        this.likes = likes;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -77,12 +46,27 @@ public class Film {
         return id == film.id;
     }
 
+    public void addGenres(GenreRecord genre) {
+        if (genres == null) {
+            genres = new HashSet<>();
+        }
+        genres.add(genre);
+    }
+
     public List<GenreRecord> getGenres() {
-        return genres.stream().collect(Collectors.toList());
+        if (genres == null) {
+            return new ArrayList<>();
+        } else {
+            return genres.stream().collect(Collectors.toList());
+        }
     }
 
     public Set<GenreRecord> createSetGenres() {
-        return genres;
+        if (genres == null) {
+            return new HashSet<>();
+        } else {
+            return genres;
+        }
     }
 
     @Override
@@ -103,6 +87,10 @@ public class Film {
     }
 
     public List<Integer> getLikes() {
-        return likes.stream().collect(Collectors.toList());
+        if (likes == null) {
+            return new ArrayList<>();
+        } else {
+            return likes.stream().collect(Collectors.toList());
+        }
     }
 }

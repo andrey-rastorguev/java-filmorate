@@ -22,8 +22,7 @@ public class UserFriendshipDAO implements FriendshipStorage {
     public void saveAll(User user) {
         Map<Integer, Boolean> friendships = user.allFriendships();
         for (Integer friendId : friendships.keySet()) {
-            String sqlFriendship = "INSERT INTO friendships (friend_from_id, friend_to_id, is_accept) VALUES (?, ?, ?);";
-            jdbcTemplate.update(sqlFriendship, user.getId(), friendId, friendships.get(friendId));
+            insertFriendship(user.getId(), friendId, friendships.get(friendId));
         }
     }
 
@@ -60,13 +59,23 @@ public class UserFriendshipDAO implements FriendshipStorage {
     }
 
     private void insertFriendship(int userId, int friendId, boolean isAccept) {
-        String sql = "INSERT INTO friendships (friend_from_id, friend_to_id, is_accept) VALUES (?, ?, ?);";
-        jdbcTemplate.update(sql, userId, friendId, isAccept);
+        String sql = "INSERT INTO friendships (friendship_id, friend_from_id, friend_to_id, is_accept) VALUES (?, ?, ?, ?);";
+        jdbcTemplate.update(sql, getLastUserFriendshipId() + 1, userId, friendId, isAccept);
     }
 
     private void updateFriendship(int userId, int friendId, boolean isAccept) {
-        String sql = "UPDATE friendships SET accept = ? WHERE friend_from_id = ? and friend_to_id = ?;";
+        String sql = "UPDATE friendships SET is_accept = ? WHERE friend_from_id = ? and friend_to_id = ?;";
         jdbcTemplate.update(sql, isAccept, userId, friendId);
+    }
+
+    private int getLastUserFriendshipId() {
+        String sql = "SELECT * FROM friendships ORDER BY friendship_id DESC LIMIT 1";
+        List<Integer> ids = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("friendship_id"));
+        if (ids.size() == 0) {
+            return 0;
+        } else {
+            return ids.get(0);
+        }
     }
 
 }
