@@ -1,7 +1,7 @@
-package ru.yandex.practicum.filmorate.other;
+package ru.yandex.practicum.filmorate.other.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
     public ObjectNotFoundException(String objectName) {
-        super("'" + objectName + "' не найден");
+        super("'" + objectName + "' not found");
     }
 }

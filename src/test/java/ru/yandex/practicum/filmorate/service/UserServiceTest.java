@@ -1,73 +1,99 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.other.TestTools;
 
 import java.time.LocalDate;
 
-class UserServiceTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    private UserService userService = TestTools.getUserService();
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class UserServiceTest {
+    @Autowired
+    private UserService userService;
 
     @BeforeEach
-    private void initial() {
+    public void initial() {
         userService.deleteAllUsers();
-        for (int i = 1; i < 11; i++) {
-            userService.addUser(new User(i, "mail" + i + "@mail.ru", "user" + i, "name" + i, LocalDate.of(1985, 3, i)));
+        User user;
+        for (int i = 1; i < 7; i++) {
+            user = User.builder()
+                    .email("e" + i + "@yandex.ru")
+                    .login("login " + i)
+                    .name("name " + i)
+                    .birthday(LocalDate.of(1990 + 3 * i, 2 + i, 25 - 2 * i))
+                    .build();
+            userService.addUser(user);
         }
+        userService.makeFriends(1, 3);
+        userService.makeFriends(3, 5);
+        user = userService.getUserById(5);
+        user.acceptFriend(3);
+        userService.updateUser(user);
+    }
+
+
+    @Test
+    void shouldReturnSevenUsersWhenGetAllUsers() {
+        User user = User.builder()
+                .name("John")
+                .login("John")
+                .email("john@gmail.com")
+                .birthday(LocalDate.of(2000, 12, 12))
+                .name("John")
+                .build();
+        userService.addUser(user);
+        assertEquals(7, userService.getAllUsers().size(), "Недопустимое количество пользователей");
     }
 
     @Test
-    void shouldReturnTwoFriendsWhenMakeTwoFriends() {
-        int userId1 = 1;
-        int userId2 = 2;
-        int userId3 = 3;
-        userService.makeFriends(userId1, userId2);
-        userService.makeFriends(userId2, userId3);
-        userService.makeFriends(userId1, userId3);
-        User user1 = userService.getUserById(userId1);
-        User user2 = userService.getUserById(userId2);
-        User user3 = userService.getUserById(userId3);
-        Assertions.assertEquals(user1.getFriends().size(), 2, "Не верное количество друзей");
-        Assertions.assertEquals(user2.getFriends().size(), 2, "Не верное количество друзей");
-        Assertions.assertEquals(user3.getFriends().size(), 2, "Не верное количество друзей");
+    void shouldReturnFiveFriendsWhenWeCreateNewUserWithFriends() {
+        User user = User.builder()
+                .name("John")
+                .login("John")
+                .email("john@gmail.com")
+                .birthday(LocalDate.of(2000, 12, 12))
+                .name("John")
+                .build();
+        userService.addUser(user);
+        userService.makeFriends(user.getId(), 1);
+        userService.makeFriends(user.getId(), 2);
+        userService.makeFriends(user.getId(), 3);
+        userService.makeFriends(user.getId(), 4);
+        userService.makeFriends(user.getId(), 5);
+        assertEquals(5, userService.getUserById(user.getId()).getFriends().size(), "Недопустимое количество друзей");
     }
 
     @Test
-    void shouldReturnOneFriendsWhenMakeTwoFriendsAndRemoveOne() {
-        int userId1 = 1;
-        int userId2 = 2;
-        int userId3 = 3;
-        userService.makeFriends(userId1, userId2);
-        userService.makeFriends(userId2, userId3);
-        userService.makeFriends(userId1, userId3);
-        userService.removeFriendForUser(userId1, userId3);
-        User user1 = userService.getUserById(userId1);
-        User user2 = userService.getUserById(userId2);
-        User user3 = userService.getUserById(userId3);
-        Assertions.assertEquals(user1.getFriends().size(), 1, "Не верное количество друзей");
-        Assertions.assertEquals(user2.getFriends().size(), 2, "Не верное количество друзей");
-        Assertions.assertEquals(user3.getFriends().size(), 2, "Не верное количество друзей");
+    void shouldReturnThreeFriendWhenFindFriends() {
+        userService.makeFriends(5, 6);
+        userService.makeFriends(5, 1);
+        assertEquals(3, userService.findFriends(5).size(), "Недопустимое количество друзей");
     }
 
     @Test
-    void shouldReturnMutualFriends() {
-        int userId1 = 1;
-        int userId2 = 2;
-        int userId3 = 3;
-        int userId4 = 4;
-        int userId5 = 5;
-        userService.makeFriends(userId1, userId2);
-        userService.makeFriends(userId2, userId3);
-        userService.makeFriends(userId1, userId3);
-        userService.makeFriends(userId1, userId5);
-        userService.makeFriends(userId4, userId5);
-        User user5 = userService.getUserById(5);
-        Assertions.assertEquals(1, userService.findMutualFriends(userId1, userId4).size(), "Не верное количество общих друзей");
-        Assertions.assertTrue(userService.findMutualFriends(userId1, userId4).contains(user5), "Не верный общий друг");
+    void shouldReturnZeroFriendWhenRemoveFriend() {
+        userService.makeFriends(5, 6);
+        userService.makeFriends(5, 1);
+        userService.removeFriendForUser(5, 6);
+        userService.removeFriendForUser(5, 1);
+        userService.removeFriendForUser(5, 3);
+        assertEquals(0, userService.findFriends(5).size(), "Недопустимое количество друзей");
     }
 
+
+    @Test
+    void findMutualFriends() {
+        assertEquals(1, userService.findMutualFriends(5, 1).size(), "Недопустимое количество общих друзей");
+    }
+
+    @Test
+    void shouldReturnSecondFriendWhenGetUserById() {
+        assertEquals("e2@yandex.ru", userService.getUserById(2).getEmail(), "Возвращен не верный пользователь");
+    }
 }

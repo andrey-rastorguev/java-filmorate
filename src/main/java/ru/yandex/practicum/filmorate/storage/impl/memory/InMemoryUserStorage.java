@@ -1,13 +1,14 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.impl.memory;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.other.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.other.exception.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Component("memoryUserStorage")
 public class InMemoryUserStorage implements UserStorage {
     private List<User> users = new ArrayList<>();
     private int nextId = 1;
@@ -28,6 +29,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public void deleteAll() {
         users.clear();
+        nextId = 1;
     }
 
     @Override
